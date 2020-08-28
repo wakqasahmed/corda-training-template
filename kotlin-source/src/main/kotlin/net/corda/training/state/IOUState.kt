@@ -20,4 +20,7 @@ data class IOUState(
         override val linearId: UniqueIdentifier = UniqueIdentifier()
 ): LinearState {
     override val participants: List<Party> get() = listOf(lender, borrower)
+
+    fun pay(amount:Amount<Currency>) = copy(paid = paid + amount)
+    fun withNewLender(newLender:Party) = copy(lender = newLender)
 }
