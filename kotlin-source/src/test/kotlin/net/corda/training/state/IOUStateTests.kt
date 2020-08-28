@@ -115,10 +115,10 @@ class IOUStateTests {
      * IntellIJ to automatically add the member definitions for you or you can add them yourself. Look at the definition
      * of [LinearState] for what requires adding.
      */
-//    @Test
-//    fun isLinearState() {
-//        assert(LinearState::class.java.isAssignableFrom(IOUState::class.java))
-//    }
+    @Test
+    fun isLinearState() {
+        assert(LinearState::class.java.isAssignableFrom(IOUState::class.java))
+    }
 
     /**
      * Task 8.
@@ -131,16 +131,16 @@ class IOUStateTests {
      * represent the complete life-cycle to date of an agreement, asset or shared fact.
      * - Provide a default value for [linearId] for a new [IOUState]
      */
-//    @Test
-//    fun hasLinearIdFieldOfCorrectType() {
-//        // Does the linearId field exist?
-//        IOUState::class.java.getDeclaredField("linearId")
-//        // Is the linearId field of the correct type?
-//        assertEquals(IOUState::class.java.getDeclaredField("linearId").type, UniqueIdentifier::class.java)
-//        // Check field is set to a not null value
-//        val iouState = IOUState(1.POUNDS, ALICE.party, BOB.party)
-//        assertNotNull(iouState.linearId)
-//    }
+    @Test
+    fun hasLinearIdFieldOfCorrectType() {
+        // Does the linearId field exist?
+        IOUState::class.java.getDeclaredField("linearId")
+        // Is the linearId field of the correct type?
+        assertEquals(IOUState::class.java.getDeclaredField("linearId").type, UniqueIdentifier::class.java)
+        // Check field is set to a not null value
+        val iouState = IOUState(1.POUNDS, ALICE.party, BOB.party)
+        assertNotNull(iouState.linearId)
+    }
 
     /**
      * Task 9.
@@ -148,20 +148,20 @@ class IOUStateTests {
      * Hint: Make sure that the lender and borrower fields are not in the wrong order as this may cause some
      * confusion in subsequent tasks!
      */
-//    @Test
-//    fun checkIOUStateParameterOrdering() {
-//        val fields = IOUState::class.java.declaredFields
-//        val amountIdx = fields.indexOf(IOUState::class.java.getDeclaredField("amount"))
-//        val lenderIdx = fields.indexOf(IOUState::class.java.getDeclaredField("lender"))
-//        val borrowerIdx = fields.indexOf(IOUState::class.java.getDeclaredField("borrower"))
-//        val paidIdx = fields.indexOf(IOUState::class.java.getDeclaredField("paid"))
-//        val linearIdIdx = fields.indexOf(IOUState::class.java.getDeclaredField("linearId"))
-//
-//        assert(amountIdx < lenderIdx)
-//        assert(lenderIdx < borrowerIdx)
-//        assert(borrowerIdx < paidIdx)
-//        assert(paidIdx < linearIdIdx)
-//    }
+    @Test
+    fun checkIOUStateParameterOrdering() {
+        val fields = IOUState::class.java.declaredFields
+        val amountIdx = fields.indexOf(IOUState::class.java.getDeclaredField("amount"))
+        val lenderIdx = fields.indexOf(IOUState::class.java.getDeclaredField("lender"))
+        val borrowerIdx = fields.indexOf(IOUState::class.java.getDeclaredField("borrower"))
+        val paidIdx = fields.indexOf(IOUState::class.java.getDeclaredField("paid"))
+        val linearIdIdx = fields.indexOf(IOUState::class.java.getDeclaredField("linearId"))
+
+        assert(amountIdx < lenderIdx)
+        assert(lenderIdx < borrowerIdx)
+        assert(borrowerIdx < paidIdx)
+        assert(paidIdx < linearIdIdx)
+    }
 
     /**
      * Task 10.
