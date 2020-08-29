@@ -1,9 +1,6 @@
 package net.corda.training.contract
 
-import net.corda.core.contracts.CommandData
-import net.corda.core.contracts.Contract
-import net.corda.core.contracts.TypeOnlyCommandData
-import net.corda.core.contracts.requireSingleCommand
+import net.corda.core.contracts.*
 import net.corda.core.transactions.LedgerTransaction
 import net.corda.training.state.IOUState
 
@@ -36,8 +33,9 @@ class IOUContract : Contract {
     override fun verify(tx: LedgerTransaction) {
         tx.commands.requireSingleCommand<Commands.Issue>()
         // Add contract code here.
-        // requireThat {
-        //     ...
-        // }
+        requireThat {
+            "No inputs should be consumed when issuing an IOU." using (tx.inputs.isEmpty())
+            "Only one output state should be created when issuing an IOU." using (tx.outputs.count() === 1)
+        }
     }
 }
