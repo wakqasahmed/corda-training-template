@@ -32,10 +32,13 @@ class IOUContract : Contract {
      */
     override fun verify(tx: LedgerTransaction) {
         tx.commands.requireSingleCommand<Commands.Issue>()
-        // Add contract code here.
+
         requireThat {
             "No inputs should be consumed when issuing an IOU." using (tx.inputs.isEmpty())
             "Only one output state should be created when issuing an IOU." using (tx.outputs.count() === 1)
+            val state = tx.outputsOfType<IOUState>().single()
+            "A newly issued IOU must have a positive amount." using (state.amount.quantity > 0)
+            "The lender and borrower cannot have the same identity." using (state.lender !== state.borrower)
         }
     }
 }
