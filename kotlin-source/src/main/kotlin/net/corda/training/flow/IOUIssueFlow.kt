@@ -1,6 +1,7 @@
 package net.corda.training.flow
 
 import co.paralleluniverse.fibers.Suspendable
+import net.corda.core.contracts.Command
 import net.corda.core.contracts.requireThat
 import net.corda.core.flows.CollectSignaturesFlow
 import net.corda.core.flows.FinalityFlow
@@ -12,6 +13,7 @@ import net.corda.core.flows.SignTransactionFlow
 import net.corda.core.flows.StartableByRPC
 import net.corda.core.transactions.SignedTransaction
 import net.corda.core.transactions.TransactionBuilder
+import net.corda.training.contract.IOUContract
 import net.corda.training.state.IOUState
 
 /**
@@ -26,8 +28,33 @@ class IOUIssueFlow(val state: IOUState) : FlowLogic<SignedTransaction>() {
     @Suspendable
     override fun call(): SignedTransaction {
         // Placeholder code to avoid type error when running the tests. Remove before starting the flow task!
+//        return serviceHub.signInitialTransaction(
+//                TransactionBuilder(notary = null)
+//        )
+
+//        * - Create a [TransactionBuilder] and pass it a notary reference.
+//        * -- A notary [Party] object can be obtained from [FlowLogic.serviceHub.networkMapCache].
+//        * -- In this training project there is only one notary
+        val notary = serviceHub.networkMapCache.notaryIdentities.first()
+        val txBuilder: TransactionBuilder = TransactionBuilder(notary = notary)
+
+//        * - Create an [IOUContract.Commands.Issue] inside a new [Command].
+//        * -- The required signers will be the same as the state's participants
+//        * -- Add the [Command] to the transaction builder [addCommand].
+        val command = Command(IOUContract.Commands.Issue(), state.participants.map {it.owningKey} )
+        txBuilder.addCommand(command)
+
+//        * - Use the flow's [IOUState] parameter as the output state with [addOutputState]
+        txBuilder.addOutputState(state, IOUContract.IOU_CONTRACT_ID)
+
+//        * - Extra credit: use [TransactionBuilder.withItems] to create the transaction instead
+//        * - Sign the transaction and convert it to a [SignedTransaction] using the [serviceHub.signInitialTransaction] method.
+//        * - Return the [SignedTransaction].
+
+        txBuilder.verify(serviceHub)
+
         return serviceHub.signInitialTransaction(
-                TransactionBuilder(notary = null)
+                txBuilder
         )
     }
 }
